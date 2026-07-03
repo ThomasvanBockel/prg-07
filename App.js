@@ -8,12 +8,14 @@ import Setting from "./screens/Setting";
 import Map from "./screens/Map";
 import Notation from "./screens/Notation";
 import {verifyInstallation} from "nativewind";
-import {useTheme} from "./components/Theme";
+import {Login} from "./components/Login";
 import {useContext, useEffect, useState} from "react";
 import {ThemeContext, ThemeProvider} from "./providers/ThemeProvider"
 
+const Tab = createBottomTabNavigator();
+const Stack = createStackNavigator();
+
 function TabNavigator() {
-    const Tab = createBottomTabNavigator();
     const {theme} = useContext(ThemeContext);
 
     return (
@@ -70,46 +72,52 @@ function TabNavigator() {
 function MainApp() {
     const {theme} = useContext(ThemeContext);
 
-    const Stack = createStackNavigator();
 
     return (
-        <NavigationContainer>
-            <Stack.Navigator
-                screenOptions={theme ? {
 
-                    headerStyle: {
-                        backgroundColor: "#1f2937",
-                    },
-                    tabBarStyle: {
-                        backgroundColor: "#1f2937",
-                    },
-                    headerTintColor: "#fff",
-                } : {
-                    headerStyle: {
-                        backgroundColor: "#fff",
-                    },
-                    headerTintColor: "#000",
-                }}
-            >
-                <Stack.Screen
-                    name="MainTabs"
-                    component={TabNavigator}
-                    options={{headerShown: false}}
-                />
+        <Stack.Navigator
+            screenOptions={theme ? {
 
-                <Stack.Screen
-                    name="Notation"
-                    component={Notation}
-                />
-            </Stack.Navigator>
-        </NavigationContainer>
+                headerStyle: {
+                    backgroundColor: "#1f2937",
+                },
+                tabBarStyle: {
+                    backgroundColor: "#1f2937",
+                },
+                headerTintColor: "#fff",
+            } : {
+                headerStyle: {
+                    backgroundColor: "#fff",
+                },
+                headerTintColor: "#000",
+            }}
+        >
+            <Stack.Screen
+                name="MainTabs"
+                component={TabNavigator}
+                options={{headerShown: false}}
+            />
+
+            <Stack.Screen
+                name="Notation"
+                component={Notation}
+            />
+        </Stack.Navigator>
     );
 }
 
 export default function App() {
+    const [loggedIn, setLoggedIn] = useState(false);
+
     return (
         <ThemeProvider>
-            <MainApp/>
+            <NavigationContainer>
+                {loggedIn ? (
+                    <MainApp/>
+                ) : (
+                    <Login setLoggedIn={setLoggedIn}/>
+                )}
+            </NavigationContainer>
         </ThemeProvider>
     );
 }

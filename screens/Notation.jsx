@@ -16,7 +16,7 @@ export default function Notation({route}) {
     })
     const {theme} = useContext(ThemeContext);
     const [prevNotation, setPrevNotation] = useState()
-    console.log(name, "notation")
+
 
     function changeInput(key, value) {
         setNotationInfo(prev => ({
