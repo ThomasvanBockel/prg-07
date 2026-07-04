@@ -30,7 +30,7 @@ export default function Notation({route}) {
 
     async function shareNote(note) {
         await Share.share({
-            message: note,
+            message: `Brug: ${name}, notitie: ${note}`
         });
     }
 
