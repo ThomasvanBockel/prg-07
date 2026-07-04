@@ -6,7 +6,7 @@ import {ThemeContext} from "../providers/ThemeProvider";
 export function Login({setLoggedIn}) {
     const {theme} = useContext(ThemeContext);
     useEffect(() => {
-        const login = async () => {
+        async function login() {
             const result = await LocalAuthentication.authenticateAsync({
                 promptMessage: "Log in",
             });
@@ -14,7 +14,7 @@ export function Login({setLoggedIn}) {
             if (result.success) {
                 setLoggedIn(true);
             }
-        };
+        }
 
         const timeout = setTimeout(login, 300);
 
