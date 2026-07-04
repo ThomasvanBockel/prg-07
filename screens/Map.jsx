@@ -50,6 +50,8 @@ export default function Map() {
             setWatchingLocation({
                 latitude: route.params.latitude,
                 longitude: route.params.longitude,
+                latitudeDelta: 0.025,
+                longitudeDelta: 0.0125
             });
         }
     }, [route.params]);
@@ -66,8 +68,8 @@ export default function Map() {
                  region={{
                      latitude: watchingLocation.latitude ?? 0,
                      longitude: watchingLocation.longitude ?? 0,
-                     latitudeDelta: 0.05,
-                     longitudeDelta: 0.025,
+                     latitudeDelta: watchingLocation.latitudeDelta ?? 0.05,
+                     longitudeDelta: watchingLocation.longitudeDelta ?? 0.025,
                  }} showsUserLocation={true}
         >
             <BridgeMarkers/>

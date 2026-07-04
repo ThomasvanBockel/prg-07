@@ -26,11 +26,11 @@ export default function Setting() {
     }, [theme]);
 
     return (
-        // className={darkMode ? "bg-gray-600" : "bg-white"} <- this is code for darkmode
         <SafeAreaView className={theme ? "bg-gray-600  flex-1" : ""}>
-            <View>
+            <View className={"flex-row items-center justify-center gap-4"}>
 
-                <Text className={theme ? " color-white" : ""}>Darkmode: {theme ? "True" : "False"} </Text>
+                <Text
+                    className={theme ? " color-white text-xl" : "text-xl"}>Darkmode: {theme ? "True" : "False"} </Text>
                 <Switch value={darkMode} onChange={changeDarkMode}/>
 
 

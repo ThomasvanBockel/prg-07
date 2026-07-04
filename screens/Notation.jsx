@@ -58,7 +58,6 @@ export default function Notation({route}) {
                     notation: notationInfo.notation
                 };
             } else {
-
                 updated.push({
                     name: name,
                     notation: notationInfo.notation
