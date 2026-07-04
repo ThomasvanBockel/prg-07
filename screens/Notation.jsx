@@ -16,6 +16,8 @@ export default function Notation({route}) {
     })
     const {theme} = useContext(ThemeContext);
     const [prevNotation, setPrevNotation] = useState()
+    const [storedNotation, setStoredNotation] = useState()
+    const [deletingNote, setDeletingNote] = useState(false)
 
 
     function changeInput(key, value) {
@@ -35,8 +37,6 @@ export default function Notation({route}) {
 
     async function saveNotation() {
 
-
-        // if no async storage item add item to async storage
         if (!prevNotation || prevNotation.length === 0) {
             await AsyncStorage.setItem(
                 'notation',
@@ -64,21 +64,39 @@ export default function Notation({route}) {
                     notation: notationInfo.notation
                 });
             }
-
-            // Always update state and AsyncStorage after handling either case
+            setStoredNotation(notationInfo.notation)
             setPrevNotation(updated);
             await AsyncStorage.setItem(
                 'notation',
                 JSON.stringify(updated)
             );
 
-            // add item to local storage
 
         }
     }
 
+    async function deleteHandler() {
+        setDeletingNote(true)
+        setNotationInfo({
+            notation: ""
+        });
+        setStoredNotation("")
+    }
+
     useEffect(() => {
-        // get info out of async/ local storage
+        if (deletingNote) {
+            setDeletingNote(false)
+
+            async function saveHandler() {
+
+                await saveNotation()
+            }
+
+            saveHandler()
+        }
+    }, [notationInfo]);
+
+    useEffect(() => {
         async function awaitHandler() {
 
 
@@ -93,7 +111,7 @@ export default function Notation({route}) {
                     setNotationInfo({
                         notation: findNotation.notation
                     });
-
+                    setStoredNotation(findNotation.notation)
                 } else {
                     setNotationInfo({notation: ""});
                 }
@@ -116,19 +134,22 @@ export default function Notation({route}) {
                 placeholderTextColor={theme ? "gray" : "gray"}
             />
 
-            <Pressable className="bg-blue-500 p-3 rounded mt-3" onPress={saveNotation}>
+            <Pressable className="bg-green-500 p-3 rounded mt-3" onPress={saveNotation}>
                 <Text className="text-white">Opslaan /(0_0)/</Text>
             </Pressable>
-            {notationInfo.notation ? (
+            {storedNotation ? (
                 <>
+                    <Pressable className="bg-red-500 p-3 rounded mt-3" onPress={deleteHandler}>
+                        <Text className="text-white">Delete /(0_0)/</Text>
+                    </Pressable>
                     <Text className={theme ? "color-white" : ""}>
                         Notitie:
                     </Text>
                     <Text className={theme ? "color-white" : ""}>
-                        {notationInfo.notation}
+                        {storedNotation}
                     </Text>
-                    <Pressable onPress={() => shareNote(notationInfo.notation)}>
-                        <Text>Deel notitie</Text>
+                    <Pressable className="bg-blue-500 p-3 rounded mt-3" onPress={() => shareNote(storedNotation)}>
+                        <Text className={theme ? "color-white" : ""}>Deel notitie</Text>
                     </Pressable>
                 </>
             ) : null}
