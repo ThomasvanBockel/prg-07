@@ -1,4 +1,4 @@
-import {Button, FlatList, Pressable, SafeAreaView, StyleSheet, Text, TextInput, View} from "react-native";
+import {Button, FlatList, Pressable, SafeAreaView, StyleSheet, Text, TextInput, View, Share} from "react-native";
 import {useContext, useEffect, useState} from "react";
 import {fetch} from "expo/fetch";
 import {SafeAreaProvider} from "react-native-safe-area-context";
@@ -23,6 +23,13 @@ export default function Notation({route}) {
             ...prev,
             [key]: value
         }));
+    }
+
+
+    async function shareNote(note) {
+        await Share.share({
+            message: note,
+        });
     }
 
 
@@ -120,6 +127,9 @@ export default function Notation({route}) {
                     <Text className={theme ? "color-white" : ""}>
                         {notationInfo.notation}
                     </Text>
+                    <Pressable onPress={() => shareNote(notationInfo.notation)}>
+                        <Text>Deel notitie</Text>
+                    </Pressable>
                 </>
             ) : null}
         </View>
